@@ -47,7 +47,7 @@ Now, in instance we enter the name of our machine, and complete the name of the 
 
 ## 3.	Execution of script
 
-•	We paste our script in the VM and simply execute this script as shown below 
+•	Paste our script in the VM and simply execute this script as shown below 
 
 You should see something like this after the successfully execution of the script
 
