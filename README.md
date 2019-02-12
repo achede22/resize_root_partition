@@ -10,13 +10,10 @@ La diferencia radica en que:
 ●	CentOS utiliza tabla de particiones MBR, se modifica con fdisk.
 
 
- 
 Es script es sólo para AWS, detecta donde está montado root, si en xvda1 o xvda2, no soporta /dev/sda (AZURE), tarda unos 50 minutos en terminar todo el proceso.
  
 Sobre la documentación, es sólo ejecutar el script, no pide parámetros.
 
-
--
 
 # PROCEDURE TO MODIFY THE ROOT PARTITION
 
