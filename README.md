@@ -1,60 +1,79 @@
-# resize_root_partition
-extend Linux root partition without issues
+# Resize Root Partition Script
 
-Extender la partición root sin afectación de servicio, lo extiende de 120GB a 190GB , moviendo la partición de LVM hacia el final.
- 
-La diferencia radica en que:
+This script resizes the root partition on CentOS/Red Hat and Ubuntu/Debian systems. It works by moving existing LVM data to a temporary disk, resizing the root partition, and then moving the LVM data back.
 
-●	RedHat utiliza tabla de particiones GPT, se modifica con gdisk.
+## Features
 
-●	CentOS utiliza tabla de particiones MBR, se modifica con fdisk.
+- **OS Detection**: Automatically detects if the script is run on CentOS/Red Hat or Ubuntu/Debian.
+- **Root Check**: Ensures the script is run with root permissions.
+- **Readable Functions**: Improved variable names and logic for better readability.
+- **Avoids Redundancies**: Removed unnecessary commands and combined actions where possible.
+- **Input Validation**: Ensures correct usage of command-line tools.
 
+## Prerequisites
 
-Es script es sólo para AWS, detecta donde está montado root, si en xvda1 o xvda2, no soporta /dev/sda (AZURE), tarda unos 50 minutos en terminar todo el proceso.
- 
-Sobre la documentación, es sólo ejecutar el script, no pide parámetros.
+- A temporary disk available to use as an LVM device.
+- Root privileges to run the script.
 
+## Usage
 
-# PROCEDURE TO MODIFY THE ROOT PARTITION
+1. **Clone the Repository**:
+    `git clone https://github.com/your-github-username/resize_root_partition_script.git`
 
-## 1.	Expand The Root volume to 190GB
+2. **Navigate to the Script Directory**:
+    `cd resize_root_partition_script`
 
-•	Login to the aws account, navigate to the desired instance and make the following changes:
+3. **Make the Script Executable**:
+    `chmod +x resize_root_partition_centos.sh`
 
-Select the disk and choose modify
- 
-Choose the new size for the disk, and apply the changes
- 
+4. **Run the Script**:
+    `sudo ./resize_root_partition_centos.sh`
 
+## Script Details
 
+- **OS Detection**:
+    - Checks `/etc/redhat-release` for Red Hat/CentOS.
+    - Checks `/etc/lsb-release` for Ubuntu/Debian.
+    
+- **Package Installation**:
+    - Installs `gdisk` using `yum` for Red Hat/CentOS.
+    - Installs `gdisk` using `apt-get` for Ubuntu/Debian.
+    
+- **Partitioning and LVM Management**:
+    - Partitions a new disk for temporary LVM storage.
+    - Moves existing LVM data to the new partition.
+    - Resizes the root partition to 100GB.
+    - Moves LVM data back to the resized root partition.
 
+## Example Output
 
-## 2.	Attach a new temporary disk
+- **Detected OS**:
+    `Detected OS: centos`
+    
+- **Root Partition**:
+    `Root partition is: /dev/sda1`
+    
+- **Original LVM Partition**:
+    `Original LVM partition is: /dev/sda2`
+    
+- **New LVM Disk**:
+    `New LVM disk is: /dev/sdb`
+    
+- **New LVM Partition**:
+    `New LVM partition is: /dev/sdb1`
 
-•	Inside the AWS, go to volumes section and choose create volume
- 
-Select the space to 90GB, and leave the other options by default, later click on create volume
- 
-You should see something like this
- 
-Copy the volume id (we are going to need this later), now going back to volumes section we are going to filter by the volume id that we copied it, next we choose attach volume.
- 
-Now, in instance we enter the name of our machine, and complete the name of the device and click on attach
- 
+## Contributing
 
-## 3.	Execution of script
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-•	Paste our script in the VM and simply execute this script as shown below 
+## Author
 
-You should see something like this after the successfully execution of the script
+- [Achede_HD](https://github.com/achede22)
 
-We recommend to have a snaphot prior of doing this modification, just in case
+## License
 
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 4.	Detaching the temporary disk.
+---
 
-We are going back to aws (volumes section), filter by the volume id, and select with right click on the volume the detach option.
-
-After this please proceed to delete the temporary volume.
-
-
+Feel free to contribute to this project by submitting issues or pull requests. Your feedback and contributions are welcome!
